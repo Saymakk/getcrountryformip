@@ -40,6 +40,11 @@ dependencies:
   firebase_core: ^2.7.0
   firebase_auth: ^4.2.9
   cloud_firestore: ^4.4.3
+  carrier_info: ^2.0.8
+  get: ^4.6.5
+  webview_flutter: ^4.0.6
+  webview_flutter_android: ^3.3.2
+  webview_flutter_wkwebview: ^3.2.0
 
 dev_dependencies:
   flutter_test:

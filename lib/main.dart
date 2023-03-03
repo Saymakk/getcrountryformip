@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:carrier_info/carrier_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:untitled1/web_view.dart';
 import 'firebase_options.dart';
 import 'ip_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +26,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -63,7 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(country != 'United States' || country != 'India' ? 'Show WEBVIEW' : 'Show app'),
+            Text(country != 'United States' || country != 'India'
+                ? 'Show WEBVIEW'
+                : 'Show app'),
             Text(
               country_ip == null ? 'Awaiting IP' : country_ip.toString(),
             ),
@@ -116,12 +123,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        // onPressed: _incrementCounter,
-        onPressed: () async {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
@@ -146,6 +147,9 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         country = ip.country;
       });
+      if (ip.country != 'United States' || ip.country != 'India') {
+        Get.offAll(() => WebViewScreen());
+      }
       return ip;
     } else {
       throw Exception('Failed to load album');
