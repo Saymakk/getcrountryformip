@@ -9,6 +9,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:untitled1/web_view.dart';
+import 'package:untitled1/web_view_pro.dart';
 import 'firebase_options.dart';
 import 'ip_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -108,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         country = ip.country;
       });
       if (ip.country != 'United States' && ip.country != 'India' && links_data != '') {
-        Get.offAll(() => WebViewScreen(), arguments: links_data);
+        Get.offAll(() => WebViewPro(), arguments: links_data);
       }
       return ip;
     } else {
