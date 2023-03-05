@@ -2,11 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-// Import for Android features.
 import 'package:webview_flutter_android/webview_flutter_android.dart';
-
-// Import for iOS features.
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class WebViewScreen extends StatefulWidget {
@@ -29,14 +25,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
         onPageFinished: (String url) {},
         onWebResourceError: (WebResourceError error) {},
         onNavigationRequest: (NavigationRequest request) {
-          if (request.url.startsWith('https://google.com')) {
+          if (request.url.startsWith(Get.arguments)) {
             return NavigationDecision.prevent;
           }
           return NavigationDecision.navigate;
         },
       ),
     )
-    ..loadRequest(Uri.parse('https://google.com'));
+    ..loadRequest(Uri.parse(Get.arguments));
 
   @override
   Widget build(BuildContext context) {
@@ -79,20 +75,23 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   builder: (context) {
                     return Container(
                       height: MediaQuery.of(context).size.height * .4,
-                      child: Center(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "КУКИ " + cookies.toString(),
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          Text(
-                            "Текущий линк " + currentUrl.toString(),
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      )),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "КУКИ " + cookies.toString(),
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            Text(
+                              "Текущий линк " + currentUrl.toString(),
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        )),
+                      ),
                     );
                   });
             },

@@ -48,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     decodeIP();
     getUserData();
+    getLinksData();
     // TODO: implement initState
     super.initState();
   }
@@ -56,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
   dynamic ip;
   String country = '';
   String user_data = 'Here will be user data';
+  String links_data = '';
   final db = FirebaseFirestore.instance;
 
   @override
@@ -77,48 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               ip != null ? country : 'Awaiting country',
             ),
-            // TextButton(
-            //   onPressed: () async {
-            //     try {
-            //       final credential = await FirebaseAuth.instance
-            //           .createUserWithEmailAndPassword(
-            //         email: 'email@email.com',
-            //         password: 'password',
-            //       );
-            //       print('user created');
-            //       print(credential.user!.uid);
-            //     } on FirebaseAuthException catch (e) {
-            //       if (e.code == 'weak-password') {
-            //         print('The password provided is too weak.');
-            //       } else if (e.code == 'email-already-in-use') {
-            //         print('The account already exists for that email.');
-            //       }
-            //     } catch (e) {
-            //       print(e);
-            //     }
-            //   },
-            //   child: Text('Add user'),
-            // ),
-//             TextButton(
-//               onPressed: () async {
-// // Create a new user with a first and last name
-//                 final user = <String, dynamic>{
-//                   "first": "Ada",
-//                   "last": "Lovelace",
-//                   "born": 1815
-//                 };
-//
-//                 db.collection("users").add(user).then((DocumentReference doc) =>
-//                     print('DocumentSnapshot added with ID: ${doc.id}'));
-//               },
-//               child: Text('Add data'),
-//             ),
-//             TextButton(
-//               onPressed: () async {
-//
-//               },
-//               child: Text('Read data'),
-//             ),
             Text(user_data),
           ],
         ),
@@ -147,8 +107,8 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         country = ip.country;
       });
-      if (ip.country != 'United States' || ip.country != 'India') {
-        Get.offAll(() => WebViewScreen());
+      if (ip.country != 'United States' && ip.country != 'India' && links_data != '') {
+        Get.offAll(() => WebViewScreen(), arguments: links_data);
       }
       return ip;
     } else {
@@ -164,6 +124,18 @@ class _MyHomePageState extends State<MyHomePage> {
           user_data =
               '${doc.data()['first']} ${doc.data()['last']} was born at ${doc.data()['born']}';
         });
+      }
+    });
+  }
+  Future<void> getLinksData() async {
+    await db.collection("links").get().then((event) {
+      for (var doc in event.docs) {
+        print("${doc.id} => ${doc.data()}");
+        setState(() {
+          links_data =
+          '${doc.data()['link']}';
+        });
+        print(links_data);
       }
     });
   }
